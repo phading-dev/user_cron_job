@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: user-cron-job
+spec:
+  schedule: "0 0 * * *"
+  concurrencyPolicy: Forbid
+  timeZone: "Pacific/Pitcairn"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: user-cron-account
+          containers:
+          - name: user-cron-job
+            image: gcr.io/phading-prod/user-cron-job:latest
+            imagePullPolicy: IfNotPresent
+            resources:
+              requests:
+                cpu: "100m"
+                memory: "128Mi"
+              limits:
+                cpu: "100m"
+                memory: "128Mi"
+          restartPolicy: OnFailure
